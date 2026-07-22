@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'none'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'">
+  <title>sleepbook — sleep diary &amp; sleep efficiency calculator</title>
+  <meta name="description" content="A printable two-week CBT-I sleep diary that computes sleep-onset latency, total sleep time, and sleep efficiency for every night. Private — runs fully in your browser.">
+  <meta name="color-scheme" content="dark light">
+  <link rel="canonical" href="https://sreenivas-sadhu-prabhakara.github.io/sleepbook/">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="author" content="Sreenivas Sadhu Prabhakara">
+  <meta name="keywords" content="sleep diary template, sleep diary pdf, sleep efficiency calculator, CBT-I sleep log, two-week sleep diary, total sleep time calculator, sleep onset latency, insomnia diary, printable sleep log, morning sleep diary">
+  <meta name="theme-color" content="#0B0F0E" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#F3FAF6" media="(prefers-color-scheme: light)">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="sleepbook">
+  <meta property="og:title" content="sleepbook — sleep diary &amp; sleep efficiency calculator">
+  <meta property="og:description" content="A printable two-week CBT-I sleep diary that computes sleep-onset latency, total sleep time, and sleep efficiency for every night. Private — runs fully in your browser.">
+  <meta property="og:url" content="https://sreenivas-sadhu-prabhakara.github.io/sleepbook/">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:image" content="https://sreenivas-sadhu-prabhakara.github.io/sleepbook/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="sleepbook — fourteen stacked night strips, jade for asleep, ink gaps for awake">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="sleepbook — sleep diary &amp; sleep efficiency calculator">
+  <meta name="twitter:description" content="A printable two-week CBT-I sleep diary that computes sleep-onset latency, total sleep time, and sleep efficiency for every night. Private — runs fully in your browser.">
+  <meta name="twitter:image" content="https://sreenivas-sadhu-prabhakara.github.io/sleepbook/og-image.png">
+  <meta name="twitter:image:alt" content="sleepbook — fourteen stacked night strips, jade for asleep, ink gaps for awake">
+
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+
+  <!-- Structured data (data block; not affected by script-src) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "sleepbook",
+    "description": "A printable two-week CBT-I morning sleep diary that computes sleep-onset latency, total sleep time, and sleep efficiency per night, then exports the two-week grid as print, CSV, or JSON. Runs entirely in the browser.",
+    "url": "https://sreenivas-sadhu-prabhakara.github.io/sleepbook/",
+    "applicationCategory": "HealthApplication",
+    "operatingSystem": "Any (modern web browser)",
+    "browserRequirements": "Requires a modern web browser with JavaScript enabled.",
+    "isAccessibleForFree": true,
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "license": "https://opensource.org/licenses/MIT",
+    "author": { "@type": "Person", "name": "Sreenivas Sadhu Prabhakara" },
+    "softwareVersion": "0.1.0",
+    "featureList": [
+      "Standard morning sleep-diary form with inline validation",
+      "Per-night sleep-onset latency, total sleep time, and sleep efficiency with the formula shown",
+      "Across-midnight time engine that rejects impossible sequences",
+      "Two-week grid with 7-day and 14-day averages",
+      "Inline SVG trend chart of sleep efficiency and total sleep time",
+      "Printable one-page clinic handoff",
+      "RFC-4180 CSV export and JSON backup/restore",
+      "Runs 100% offline in your browser"
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How is sleep efficiency calculated?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Sleep efficiency is total sleep time divided by time in bed, times 100 (SE = TST / TIB x 100). sleepbook derives total sleep time as time in bed minus the pre-sleep wait, minus your minutes to fall asleep, minus mid-night time awake, minus the minutes lying in bed after your final awakening. The formula is printed next to every number, so nothing is a black box."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is this a sleep diary template I can print for my clinic?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. sleepbook keeps a standard morning sleep diary and prints a two-week grid on one A4 or Letter page, with a name and date-range header and 7-day and 14-day average rows. It is a generic implementation of the standard sleep-diary fields, not a reproduction of the copyrighted Consensus Sleep Diary instrument. You can also export CSV for your clinician or a JSON backup for yourself."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does sleepbook send my sleep data anywhere?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. A strict Content-Security-Policy sets connect-src to none, so the app cannot make any network request even if it tried. Your diary is saved only in this browser's local storage and never leaves your device. Because there is no network dependency, it also works fully offline."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does a sleep diary replace a sleep study or a doctor?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. A self-report morning diary is the clinical standard for assessing insomnia, and that is a strength, not a downgrade — but it records your report of the night, not a sensor's estimate of true sleep. sleepbook computes numbers; it never treats. CBT-I should be guided by a clinician, and loud snoring, gasping, or breathing pauses are reasons to see a clinician about sleep apnea regardless of what this diary shows."
+        }
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#entry">Skip to the diary entry form</a>
+
+  <!-- ============ HERO ============ -->
+  <header class="hero" id="top">
+    <div class="hero__inner">
+      <div class="brand">
+        <svg class="brand__mark" viewBox="0 0 32 32" aria-hidden="true">
+          <rect width="32" height="32" rx="8" fill="#0B0F0E"/>
+          <rect x="4" y="13" width="24" height="6" rx="3" fill="#131A17"/>
+          <rect x="4" y="13" width="9"  height="6" rx="3" fill="#2EBD8B"/>
+          <rect x="17" y="13" width="11" height="6" rx="3" fill="#2EBD8B"/>
+        </svg>
+        <span class="brand__name">sleepbook</span>
+      </div>
+      <p class="eyebrow">Sleep diary &middot; CBT-I &middot; private &amp; offline</p>
+      <h1 class="hero__title">Sleep Diary &amp; Sleep Efficiency Calculator — Printable Two-Week CBT-I Log</h1>
+      <p class="hero__lede">
+        Keep the standard morning diary and get honestly computed sleep-onset latency, total sleep
+        time and sleep efficiency for every night — with the formula shown next to each number.
+        Then hand it to your clinician as a printed two-week grid or a CSV. Your diary never leaves
+        this browser.
+      </p>
+      <ul class="hero__facts" aria-label="What sleepbook does">
+        <li><span class="dot dot--jade" aria-hidden="true"></span>SE = TST / TIB &times; 100, no black box</li>
+        <li><span class="dot dot--mint" aria-hidden="true"></span>across-midnight time engine</li>
+        <li><span class="dot dot--jade" aria-hidden="true"></span>print &middot; CSV &middot; JSON backup</li>
+      </ul>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <!-- ============ HONEST FRAMING ============ -->
+    <section class="framing" aria-labelledby="framing-h">
+      <h2 id="framing-h" class="framing__h">What this is — and isn't</h2>
+      <div class="framing__grid">
+        <p class="framing__item framing__item--good">
+          <strong>Self-report is the clinical standard</strong> for assessing insomnia. This diary
+          records <em>your</em> report of the night — a strength, not a downgrade.
+        </p>
+        <p class="framing__item framing__item--warn">
+          <strong>It computes, it never treats.</strong> No sleep-restriction schedules, no
+          recommended bedtimes or sleep windows. CBT-I should be guided by a clinician.
+        </p>
+        <p class="framing__item">
+          <strong>Not a sensor.</strong> It is not a wearable and does not estimate "true" sleep;
+          it does the arithmetic on the times and minutes you enter.
+        </p>
+        <p class="framing__item">
+          <strong>Not a diagnosis.</strong> Loud snoring, gasping, or breathing pauses are reasons
+          to see a clinician about sleep apnea regardless of what this diary shows.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ ENTRY FORM ============ -->
+    <section class="card" aria-labelledby="entry-h" id="entry">
+      <div class="card__head">
+        <h2 id="entry-h" class="card__title">Morning entry</h2>
+        <p class="card__sub" id="entryMode">Fill this in each morning. One entry per date; you can edit a past entry later.</p>
+      </div>
+
+      <form class="diary" id="diaryForm" novalidate>
+        <div class="grid">
+          <!-- fields injected by app.js into these slots so labels/help come from the spec -->
+          <div class="field field--date" data-field="morningDate"></div>
+          <div class="field" data-field="inBedTime"></div>
+          <div class="field" data-field="tryToSleepTime"></div>
+          <div class="field" data-field="solMinutes"></div>
+          <div class="field" data-field="awakeningsCount"></div>
+          <div class="field" data-field="wasoMinutes"></div>
+          <div class="field" data-field="finalWakeTime"></div>
+          <div class="field" data-field="outOfBedTime"></div>
+          <div class="field" data-field="qualityRating"></div>
+          <div class="field field--note" data-field="note"></div>
+        </div>
+
+        <div class="formmsg" id="formMsg" role="status" aria-live="polite"></div>
+
+        <div class="actions">
+          <button type="submit" class="btn btn--primary" id="saveBtn">Save this night</button>
+          <button type="button" class="btn" id="resetBtn">Clear form</button>
+          <button type="button" class="btn btn--ghost" id="cancelEditBtn" hidden>Cancel edit</button>
+        </div>
+      </form>
+
+      <!-- live computed panel -->
+      <div class="readout" id="readout" aria-live="polite" aria-atomic="true">
+        <p class="readout__hint">Enter a full night above to see the computed measures here, each with its formula.</p>
+      </div>
+    </section>
+
+    <!-- ============ TWO-WEEK GRID ============ -->
+    <section class="card" aria-labelledby="grid-h" id="grid">
+      <div class="card__head card__head--row">
+        <div>
+          <h2 id="grid-h" class="card__title">Two-week diary grid</h2>
+          <p class="card__sub">The most recent 14 nights. The strip in each row is time in bed: <span class="chip-legend"><span class="swatch swatch--jade" aria-hidden="true"></span>asleep</span> and <span class="chip-legend"><span class="swatch swatch--gap" aria-hidden="true"></span>awake</span>.</p>
+        </div>
+        <div class="grid__meta">
+          <label class="namefield">
+            <span>Name / initials on printout</span>
+            <input type="text" id="patientName" maxlength="60" autocomplete="off" placeholder="e.g. A.R.">
+          </label>
+        </div>
+      </div>
+      <div class="tablewrap" id="gridWrap">
+        <p class="empty" id="gridEmpty">No nights logged yet. Save a night above and it will appear here.</p>
+      </div>
+    </section>
+
+    <!-- ============ TREND ============ -->
+    <section class="card" aria-labelledby="trend-h" id="trend">
+      <div class="card__head">
+        <h2 id="trend-h" class="card__title">Trend</h2>
+        <p class="card__sub">Sleep efficiency (%) and total sleep time (hours) across every logged night. Drawn with plain SVG — no chart library, no network.</p>
+      </div>
+      <div class="trendwrap" id="trendWrap">
+        <p class="empty" id="trendEmpty">Log at least two nights to see the trend.</p>
+      </div>
+    </section>
+
+    <!-- ============ HANDOFF ============ -->
+    <section class="card" aria-labelledby="handoff-h" id="handoff">
+      <div class="card__head">
+        <h2 id="handoff-h" class="card__title">Handoff &amp; backup</h2>
+        <p class="card__sub">Print/CSV/JSON are the only ways data leaves this app — there is no account and no cloud.</p>
+      </div>
+      <div class="actions actions--wrap">
+        <button type="button" class="btn btn--primary" id="printBtn">Print two-week grid</button>
+        <button type="button" class="btn" id="csvBtn">Export CSV</button>
+        <button type="button" class="btn" id="jsonBtn">Download JSON backup</button>
+        <label class="btn btn--file">
+          <span>Restore from JSON</span>
+          <input type="file" id="restoreInput" accept="application/json,.json" hidden>
+        </label>
+        <button type="button" class="btn btn--danger" id="clearAllBtn">Delete all data</button>
+      </div>
+      <p class="handoff__note" id="handoffMsg" role="status" aria-live="polite"></p>
+    </section>
+
+    <!-- ============ HONEST LIMITS ============ -->
+    <section class="card limits" aria-labelledby="limits-h" id="limits">
+      <h2 id="limits-h" class="card__title">Honest limits</h2>
+      <ul class="limits__list">
+        <li><strong>Self-report only.</strong> This is the clinical standard for insomnia assessment, not a downgrade — but it is your report of the night, not a sensor estimate of "true" sleep.</li>
+        <li><strong>Computes, never treats.</strong> No sleep-restriction schedules or bedtime prescriptions. CBT-I should be guided by a clinician.</li>
+        <li><strong>Fixed 24-hour clock.</strong> On the two daylight-saving-transition nights a year, time-derived durations (time in bed, pre-sleep wait, early-rise) can be off by up to an hour. This is documented, not auto-corrected.</li>
+        <li><strong>Local storage only.</strong> Your diary lives only in this browser. Clearing site data deletes it — use the JSON backup.</li>
+        <li><strong>Not a medical device and not a diagnosis.</strong> Loud snoring, gasping, or breathing pauses are reasons to see a clinician about sleep apnea regardless of what this diary shows.</li>
+        <li><strong>Generic fields.</strong> These are a generic implementation of standard sleep-diary items, cross-checked against published CBT-I / consensus-sleep-diary descriptions — not the Consensus Sleep Diary instrument itself.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="foot__inner">
+      <p class="foot__disclaimer">
+        <strong>Medical disclaimer.</strong> sleepbook is an informational sleep-diary calculator, not
+        medical advice, diagnosis, or treatment, and not a medical device. Sleep efficiency is reported
+        as the published standard SE = total sleep time ÷ time in bed × 100; it is not interpreted
+        against any clinical threshold here. Field definitions and the formula were verified on
+        2026-07-22 against the Consensus Sleep Diary (Carney et&nbsp;al., 2012) and a published CBT-I
+        sleep-efficiency description (see the project sources). Always discuss your sleep and any CBT-I
+        plan with a qualified clinician. Provided under the MIT License "as is", without warranty of any
+        kind; the author accepts no liability for any loss or harm arising from its use.
+      </p>
+      <p class="foot__meta">
+        <span>sleepbook v0.1.0</span> &middot;
+        <span>runs 100% in your browser</span> &middot;
+        <span>no accounts, no network, no tracking</span>
+      </p>
+    </div>
+  </footer>
+
+  <!-- data + engine first (browser globals), then the app -->
+  <script src="data/spec.js"></script>
+  <script src="data/engine.js"></script>
+  <script src="data/csv.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

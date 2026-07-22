@@ -1,0 +1,24 @@
+{
+  "name": "sleepbook — sleep diary & sleep efficiency calculator",
+  "short_name": "sleepbook",
+  "description": "A printable two-week CBT-I morning sleep diary that computes sleep-onset latency, total sleep time, and sleep efficiency per night. Private, works fully offline.",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "background_color": "#0B0F0E",
+  "theme_color": "#0B0F0E",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
