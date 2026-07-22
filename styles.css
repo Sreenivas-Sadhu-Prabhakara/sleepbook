@@ -22,6 +22,11 @@
   --amber-dim: rgba(224, 164, 88, 0.16);
   --rose-dim:  rgba(240, 138, 138, 0.14);
 
+  /* on-accent text: near-black reads AA on bright jade (dark scheme) */
+  --on-jade:      #04120C;
+  /* danger hover fill kept dark enough for white text in BOTH schemes (6.5:1) */
+  --danger-hover: #B3261E;
+
   --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
   --radius: 14px;
@@ -60,6 +65,10 @@
     --strip-wake:  #DCEBE3;
     --strip-track: #E7F2EC;
     --strip-frame: #B8D2C6;
+
+    /* deep-jade fill is dark, so on-accent text must be WHITE for AA (6.5:1);
+       #04120C on #0F6B4E is only 2.95:1 and would fail as a button label */
+    --on-jade: #FFFFFF;
   }
 }
 
@@ -102,7 +111,7 @@ body::before {
 /* ---------- skip link + focus ---------- */
 .skip-link {
   position: absolute; left: 12px; top: -60px;
-  background: var(--jade); color: #04120C;
+  background: var(--jade); color: var(--on-jade);
   padding: 10px 16px; border-radius: 10px; font-weight: 700;
   z-index: 60; transition: top 0.18s var(--ease); text-decoration: none;
 }
@@ -200,11 +209,11 @@ textarea.field__control { resize: vertical; min-height: 44px; }
 }
 .btn:hover { border-color: var(--jade); }
 .btn:active { transform: translateY(1px); }
-.btn--primary { background: var(--jade); color: #04120C; border-color: transparent; }
-.btn--primary:hover { background: var(--mint); color: #04120C; }
+.btn--primary { background: var(--jade); color: var(--on-jade); border-color: transparent; }
+.btn--primary:hover { background: var(--mint); color: var(--on-jade); }
 .btn--ghost { background: transparent; }
 .btn--danger { color: var(--rose); border-color: var(--rose); background: var(--rose-dim); }
-.btn--danger:hover { background: var(--rose); color: #fff; border-color: transparent; }
+.btn--danger:hover { background: var(--danger-hover); color: #fff; border-color: transparent; }
 .btn--file { display: inline-flex; align-items: center; }
 
 /* ---------- readout ---------- */
